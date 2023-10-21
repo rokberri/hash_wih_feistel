@@ -12,7 +12,7 @@ def split_into_blocks(bins:str, size=64)->list[str]:
             tmp = ''
     return list_of_blocks 
 
-def hash_function(bins:str,f)->str:
+def hash_function(bins:str,f, use_fin_func=False)->str:
     IV = '1101110110111010110001001101001000000010110110101000111010100010'
     hash_code = ''
     blocks_of_bins = split_into_blocks(bins)
@@ -26,7 +26,10 @@ def hash_function(bins:str,f)->str:
             hash_code = xor(block,prev_hash)
             hash_code = encryption(hash_code, prev_hash, f)
             hash_code = xor(hash_code, block)
-    return hash_code
+    if use_fin_func:
+        return finalization_func(hash_code)
+    else:
+        return hash_code
 
 
 def finalization_func(hash_code:str)->str:
